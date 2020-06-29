@@ -1,31 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
-
+import React, { Component, Suspense } from 'react';
+import Searchbar from './components/Searchbar';
 import './App.css';
 
-function App() {
+const WeatherWidget = React.lazy(() => import('./components/WeatherWidget'))
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      city: ''
+    }
+  }
+
+changeCity = (city) => {
+  this.setState({ city: city})
+}
+
+handleSubmit = (data) => {
+  console.log(this.state.city)
+  data.preventDefault();
+}
+
+
+render() {
   return (
     <div className="weather-container">
     <div>
-      <Searchbar location={this.state.location} changeLocation={this.changeLocation} />
-      {/* Search Bar will have a onclick/handlesubmit that will change the location in App - this will then change the background image via the unsplash API
-      if i pass down something like a ChangeLocation function from this parent component to the searchbar component it will work
-      so within my Searchbar component, now I have passed down the location prop and the changeLocation function, I will be able to access location and change it with changeLocation as below
-
-      within changeLocation(location) we have a this.setState({ location })
-      
-      <input value={this.props.location} onSubmit(or onChange)={this.props.changeLocation}/>
-      
-      */}
+      <Searchbar
+        city = {this.state.city}
+        changeCity={this.changeCity}
+        onSubmit = {this.handleSubmit}
+      />
     </div>
+      <Suspense fallback = {<div>Loading...</div>}>
+        <WeatherWidget city = {this.state.city} />
+      </Suspense>
     <div>
-      <WeatherWidget />
-    </div>
-    <div>
-      <UnsplashCredit />
     </div>
     </div>
   );
-}
+}}
 
 export default App;
