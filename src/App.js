@@ -1,8 +1,7 @@
-import React, { Component, Suspense } from 'react';
+import React, { Component } from 'react';
 import Searchbar from './components/Searchbar';
+import WeatherWidget from './components/WeatherWidget'
 import './App.css';
-
-const WeatherWidget = React.lazy(() => import('./components/WeatherWidget'))
 
 class App extends Component {
   constructor(props) {
@@ -32,9 +31,7 @@ render() {
         onSubmit = {this.handleSubmit}
       />
     </div>
-      <Suspense fallback = {<div>Loading...</div>}>
         <WeatherWidget city = {this.state.city} />
-      </Suspense>
     <div>
     </div>
     </div>
