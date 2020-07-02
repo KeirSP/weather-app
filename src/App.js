@@ -1,14 +1,14 @@
-import React, { Component, Suspense } from 'react';
+import React, { Component } from 'react';
 import Searchbar from './components/Searchbar';
+import WeatherWidget from './components/WeatherWidget'
 import './App.css';
-
-const WeatherWidget = React.lazy(() => import('./components/WeatherWidget'));
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      city: ''
+      city: '',
+      widgetLoad: false
     }
   }
 
@@ -18,11 +18,20 @@ changeCity = (city) => {
 
 handleSubmit = (data) => {
   console.log(this.state.city)
+  this.setState({widgetLoad: true});
   data.preventDefault();
 }
 
-
 render() {
+  var widget;
+  if (this.state.widgetLoad) {
+    widget = 
+        <WeatherWidget city = {this.state.city} />
+  } else {
+    widget =
+    <div> Loading ... </div>
+  }
+
   return (
     <div className="weather-container">
     <div>
@@ -32,9 +41,7 @@ render() {
         onSubmit = {this.handleSubmit}
       />
     </div>
-      <Suspense fallback = {<div>Loading...</div>}>
-        <WeatherWidget city = {this.state.city} />
-      </Suspense>
+      {widget}
     <div>
     </div>
     </div>
