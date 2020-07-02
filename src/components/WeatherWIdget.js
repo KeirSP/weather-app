@@ -4,7 +4,8 @@ class WeatherWidget extends Component {
     constructor(props) {
     super(props);
     this.state = {
-        
+        apiData: [],
+        isLoaded: false
     }}
 
     WeatherAPICall = () => {
@@ -15,7 +16,11 @@ class WeatherWidget extends Component {
         console.log(callURI)
         return fetch(callURI)
             .then(response => response.json())
-            .then(data => console.log(data))
+            .then((data) => {
+            this.setState({apiData: data})
+            this.setState({isLoaded: true})
+            console.log(this.state.apiData.main.temp)
+        })
             .catch(error => console.log(error))
 
     }
@@ -26,9 +31,22 @@ class WeatherWidget extends Component {
 
     render() {
         return (
+            this.state.isLoaded ? (
             <div>
-                {this.props.city}
+            <div>
+                The weather in {this.props.city}
             </div>
+            <div>
+                <div>
+                {this.state.apiData.main.temp}
+                </div>
+            </div>
+            </div>
+            )
+            :
+            (
+            <div>Loading...</div>
+            )
             )
     }
 }
