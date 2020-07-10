@@ -32,17 +32,28 @@ render() {
     <div> Loading ... </div>
   }
 
+  var backgroundImgSrc;
+  if (this.state.widgetLoad) {
+    const url = "https://source.unsplash.com/1600x900/?"
+    const location = this.props.city;
+    backgroundImgSrc = url + location;
+    
+  } else {
+    backgroundImgSrc = 
+    "https://source.unsplash.com/1600x900/?weather"
+  }
+
   return (
+    <div >
     <div className="weather-container">
-    <div>
       <Searchbar
         city = {this.state.city}
         changeCity={this.changeCity}
         onSubmit = {this.handleSubmit}
       />
-    </div>
-      {widget}
     <div>
+    {widget}
+    </div>
     </div>
     </div>
   );
